@@ -1,12 +1,20 @@
 import React from 'react';
-import './App.css';
-import Rick from './components/Rick/Rick'
-import ReactPlayer from 'react-player'
+import styles from './App.css';
+import ImageView from './components/ImageView/ImageView'
+import MenuView from './components/Menu/MenuView'
 
 function App() {
   return (
-    <div>
-      <ReactPlayer url='https://www.youtube.com/watch?v=dQw4w9WgXcQ'/>
+    <div className={styles.rootDiv}>
+          <div className={styles.imgDiv}>
+            <MenuView />
+          </div>
+          <div className={styles.menuDiv}>
+            <ImageView />
+          </div>
+          <div className={styles.slideDiv}>
+            <p>slide</p>
+          </div>
     </div>
   );
 }
