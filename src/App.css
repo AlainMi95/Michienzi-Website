@@ -2,23 +2,94 @@
   text-align: center;
 }
 
-.rootDiv {
-  display: grid;
-    grid-template-columns: 3,1;
-    grid-gap: 1px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.imgDiv {
-      grid-column: 2;
-      grid-row: 1;
+:root {
+--primary-color: #1c1c1c;
+--secondary-color: #1c1c1c;
+--complimentary-color: #1c1c1c;
+--contrast-color: #1c1c1c;
+--light-color: #1c1c1c;
 }
 
-.menuDiv {
-      grid-column: 1;
-      grid-row: 1;
+.container {
+  background: #170000;
+  min-height: 100vh;
+  font-family: Montserrat, sans-serif;
 }
 
-.slideDiv {
-      grid-column: 3;
-      grid-row: 1;
+nav a {
+    font-size: 40px;
+    color: #ff8f8f;
+    text-decoration: none;
+    padding: 20px;
+    text-align: center;
+}
+
+nav {
+    position: fixed;
+    left: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    height: 100vh;
+    background: var(--secondary-color);
+}
+
+section {
+    position: absolute;
+    top: 0;
+    height: 100vh;
+    width: 0;
+    opacity: 0;
+    transition: all ease-in .5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section h1 {
+    color: #fff;
+    font-size: 50px;
+    text-transform: uppercase;
+    opacity: 0;
+}
+
+/* Styles applied on trigger */
+section:target {
+    opacity: 1;
+    position: absolute;
+    left: ;
+    width: 70%;
+    height: 100%;
+    z-index: 10;
+}
+
+section:target h1 {
+    opacity: 0;
+    animation: 2s fadeIn forwards .5s;
+}
+
+#first {
+  background:var(--primary-color);
+}
+#second {
+    background: var(--complimentary-color);
+}
+
+#third {
+    background: var(--contrast-color);
+}
+
+#fourth {
+    background: var(--light-color);
+}
+
+@keyframes fadeIn {
+    100% { opacity:1 }
 }
