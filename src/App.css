@@ -91,3 +91,23 @@ section:target h1 {
 @keyframes fadeIn {
     100% { opacity:1 }
 }
+
+.homeImage{
+    width: 30px;
+    height: 30px;
+}
+
+.aboutImage{
+    width: 30px;
+    height: 30px;
+}
+
+.cvImage{
+    width: 30px;
+    height: 30px;
+}
+
+.contactImage{
+    width: 30px;
+    height: 30px;
+}
