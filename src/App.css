@@ -11,9 +11,6 @@
 :root {
 --primary-color: #1c1c1c;
 --secondary-color: #1c1c1c;
---complimentary-color: #1c1c1c;
---contrast-color: #1c1c1c;
---light-color: #1c1c1c;
 }
 
 .container {
@@ -38,12 +35,13 @@ nav {
     justify-content: space-around;
     flex-direction: column;
     height: 100vh;
-    background: var(--secondary-color);
+    background: var(--primary-color);
 }
 
 section {
     position: absolute;
     top: 0;
+    left: 500px;
     height: 100vh;
     width: 0;
     opacity: 0;
@@ -75,19 +73,19 @@ section:target h1 {
     animation: 2s fadeIn forwards .5s;
 }
 
-#first {
+#home {
   background:var(--primary-color);
 }
-#second {
-    background: var(--complimentary-color);
+#about {
+    background: var(--primary-color);
 }
 
-#third {
-    background: var(--contrast-color);
+#cv {
+    background: var(--primary-color);
 }
 
-#fourth {
-    background: var(--light-color);
+#contact {
+    background: var(--primary-color);
 }
 
 @keyframes fadeIn {
