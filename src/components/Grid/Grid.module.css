@@ -1,0 +1,10 @@
+.mainDiv{
+    border:1px solid white;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.mainDiv > * {
+    width: 50%;
+}
