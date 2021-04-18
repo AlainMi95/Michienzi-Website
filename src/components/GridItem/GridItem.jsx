@@ -1,15 +1,12 @@
 import React from "react";
 import style from "./GridItem.module.css"
+import { Link } from 'react-router-dom';
 
-export default function GridItem({icon, display, displayValue, img}) {
-
-    React.useEffect(()=>console.log(displayValue))
-
-
+export default function GridItem({icon, link, img}) {
     return (
-        <div className={style.mainDiv} onClick={() => display(displayValue)}>
+        <Link className={style.mainDiv} to={link}>
            <img className={style.backgroundImg} src={img}/>
            <img className={style.iconImg} src={icon}/>
-        </div>
+        </Link>
     );
 }

@@ -1,12 +1,12 @@
 import React from 'react';
 
-import style from './Code.module.css'
+import style from './Header.module.css'
 import { Link } from 'react-router-dom';
 
-export default function Code() {
+export default function Header() {
     return (
         <div className={style.mainDiv}>
-            <p>test</p>
+            <Link className={style.amLink} to='/'>&lt;AM/&gt;</Link>
         </div>
     )
 }

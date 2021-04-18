@@ -1,0 +1,20 @@
+.mainDiv {
+    padding: 20px;
+    position: fixed;
+    left: 0;
+    top: 15px;
+    height: 60px;
+    width: 100%;
+}
+
+.amLink {
+    text-decoration: none;
+    color: gray;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 45px;
+    margin-left: 80px;
+}
+
+.amLink:hover {
+    color: white;
+}
