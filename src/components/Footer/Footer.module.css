@@ -1,0 +1,23 @@
+.mainDiv {
+    padding: 20px;
+    position: fixed;
+    left: 0;
+    bottom: 5px;
+    height: 60px;
+    width: 100%;
+}
+
+.footerList {
+    display: flex;
+    list-style: none;
+    justify-content: flex-end;
+}
+
+.footerItem {
+    margin-left: 50px;
+}
+
+.links {
+    text-decoration: none;
+    color: white;
+}
