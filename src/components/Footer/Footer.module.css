@@ -14,10 +14,15 @@
 }
 
 .footerItem {
-    margin-left: 50px;
+    margin-right: 50px;
 }
 
 .links {
     text-decoration: none;
+    color: gray;
+    font-family: 'Ubuntu Mono', monospace;
+}
+
+.links:hover {
     color: white;
 }
