@@ -8,4 +8,5 @@
 
 .mainDiv > div{
     display: flex;
+    max-width: 60%;
 }
