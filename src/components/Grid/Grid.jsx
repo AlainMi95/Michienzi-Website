@@ -9,7 +9,7 @@ export default function Grid({children}) {
         <GridItem icon="/assets/images/user-solid.svg" link={'/about'} img="/assets/images/guitar.jpg"/>
         <GridItem icon="/assets/images/code-solid.svg" link={'/code'} img="/assets/images/code.jpg"/>
         <GridItem icon="/assets/images/phone-solid.svg" link={'/contact'} img="/assets/images/contact.jpg"/>
-        <GridItem icon="/assets/images/pencil-alt-solid.svg" link={''} img="/assets/images/blog.jpg"/>
+        <GridItem icon="/assets/images/pencil-alt-solid.svg" link={'/blog'} img="/assets/images/blog.jpg"/>
     </div>
     );
 }

@@ -6,6 +6,10 @@ import Header from "../Header/Header";
 import Grid from "../Grid/Grid";
 import ImageView from "../ImageView/ImageView";
 import Footer from "../Footer/Footer";
+import Code from "../Code/Code";
+import About from "../About/About";
+import Contact from "../Contact/Contact";
+import Blog from "../Blog/Blog";
 
 import {
     BrowserRouter as Router,
@@ -13,8 +17,6 @@ import {
     Route,
     Link
 } from "react-router-dom";
-import Code from "../Code/Code";
-
 
 export default function App() {
   return (
@@ -27,9 +29,10 @@ export default function App() {
                           <ImageView/>
                           <Grid/>
                       </Route>
-                      <Route path="/code">
-                        <Code/>
-                      </Route>
+                      <Route path='/about' exact component={About}/>
+                      <Route path='/code' exact component={Code}/>
+                      <Route path='/contact' exact component={Contact}/>
+                      <Route path='/blog' exact component={Blog}/>
                   </Switch>
                   <Footer/>
               </div>
