@@ -21,8 +21,10 @@ export default function App() {
                   <Header/>
                   <Switch>
                       <Route exact path="/">
-                          <ImageView/>
-                          <Grid/>
+                          <div className={style.gridDiv}>
+                            <ImageView/>
+                            <Grid/>
+                          </div>
                       </Route>
                       <Route path='/about' component={About}/>
                       <Route path='/code' component={Code}/>
