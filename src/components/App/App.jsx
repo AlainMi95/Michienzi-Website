@@ -11,32 +11,27 @@ import About from "../About/About";
 import Contact from "../Contact/Contact";
 import Blog from "../Blog/Blog";
 
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
+import { BrowserRouter, Route, Switch} from 'react-router-dom';
 
 export default function App() {
   return (
-      <Router>
+      <BrowserRouter>
           <div className={style.mainDiv}>
               <div>
                   <Header/>
                   <Switch>
-                      <Route path="/">
+                      <Route exact path="/">
                           <ImageView/>
                           <Grid/>
                       </Route>
-                      <Route path='/about' exact component={About}/>
-                      <Route path='/code' exact component={Code}/>
-                      <Route path='/contact' exact component={Contact}/>
-                      <Route path='/blog' exact component={Blog}/>
+                      <Route path='/about' component={About}/>
+                      <Route path='/code' component={Code}/>
+                      <Route path='/contact' component={Contact}/>
+                      <Route path='/blog' component={Blog}/>
                   </Switch>
                   <Footer/>
               </div>
           </div>
-      </Router>
+      </BrowserRouter>
   );
 }

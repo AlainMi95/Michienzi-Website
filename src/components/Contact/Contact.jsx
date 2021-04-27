@@ -5,6 +5,9 @@ import style from './Contact.module.css'
 export default function Contact() {
     return (
         <div className={style.mainDiv}>
+            <h1>Coming Soon</h1>
+        </div>
+    /**    <div className={style.mainDiv}>
             <h1>&bull; Contact Me &bull;</h1>
                 <form action="#" method="post" id="contact_form">
                     <div className={style.nameDiv}>
@@ -27,8 +30,7 @@ export default function Contact() {
                     <div className={style.buttonDiv}>
                         <button ClassName={style.button} id="button">Submit</button>
                     </div>
-
                 </form>
-        </div>
+        </div>"*/
     )
 }

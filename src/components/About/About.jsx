@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 export default function About() {
     return (
         <div className={style.mainDiv}>
-            <p>test</p>
+            <h1>Coming Soon</h1>
         </div>
     )
 }
