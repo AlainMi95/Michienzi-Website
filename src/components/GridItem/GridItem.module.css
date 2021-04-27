@@ -30,3 +30,15 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+@media screen and (max-width: 500px) {
+    .mainDiv{
+        width: 25%;
+        height: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border:2px solid #0d0d0d;
+        border-radius: 10px;
+        position: relative;
+    }
+}
