@@ -2,10 +2,10 @@
 
 This repo houses the assets used to build the Michienzi website.
 
-##Built With
+## Built With
 The Website is built and developed using [React.js](https://reactjs.org/)
 
-##Author
+## Author
 **Alain Michienzi** - [GitHub](https://github.com/AlainMi95)
 
 
