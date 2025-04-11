@@ -1,0 +1,142 @@
+:root {
+    --primary: #2a2f3a;
+    --accent: #64d9a5;
+    --text: #f3f4f6;
+    --glow: 0 0 4px var(--accent);
+  }
+  
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0e0f13, #39404e);
+    color: var(--text);
+  }
+  
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.2rem 1rem;
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    transition: background 0.5s ease;
+  }
+  
+  .nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+  }
+  
+  .nav a:hover {
+    text-shadow: var(--glow);
+  }
+  
+  .logo {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.6rem;
+    text-shadow: var(--glow);
+    flex: 1 1 100%;
+    text-align: center;
+  }
+  
+  header {
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+  }
+  
+  header h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-shadow: var(--glow);
+  }
+  
+  header p {
+    font-size: 1.5rem;
+    color: #cbd5e1;
+  }
+  
+  section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+    border-bottom: 1px solid #374151;
+  }
+  
+  section:last-of-type {
+    border-bottom: none;
+  }
+  
+  section h2 {
+    font-size: 2.4rem;
+    margin-bottom: 2rem;
+    color: var(--accent);
+    text-shadow: var(--glow);
+  }
+  
+  section p,
+  section ul {
+    font-size: 1.15rem;
+    line-height: 2;
+    margin-bottom: 1rem;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  li strong {
+    color: var(--accent);
+    text-shadow: var(--glow);
+  }
+  
+  footer {
+    text-align: center;
+    padding: 4rem 1rem;
+    font-size: 1rem;
+    color: #9ca3af;
+  }
+  
+  .contact-icons {
+    font-size: 2rem;
+  }
+  
+  .contact-icons a {
+    margin-right: 1.5rem;
+    text-decoration: none;
+  }
+  
+  .contact-icons img {
+    width: 36px;
+    height: 36px;
+    vertical-align: middle;
+  }
+  
+  .code-block {
+    background-color: #2b2b2b;
+    color: #a9b7c6;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    font-family: 'Courier New', monospace;
+    white-space: pre-wrap;   
+    word-break: break-word;  
+    overflow-x: hidden;
+  }
+  
+  .keyword {
+    color: #cc7832;
+  }
+  
+  .identifier {
+    color: #ffc66d;
+  }
+  
+  .property {
+    color: #9876aa;
+  }
