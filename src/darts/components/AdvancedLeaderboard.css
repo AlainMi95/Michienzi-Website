@@ -1,27 +1,34 @@
 .advanced-leaderboard-container {
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 2rem;
+  max-width: 430px;
+  width: 100%;
+  margin: 1rem auto;
+  padding: 1rem 0.5rem;
   background: #20232a;
   border-radius: 12px;
   box-shadow: 0 6px 24px rgba(0,0,0,0.15);
   color: #f4f4f4;
+  box-sizing: border-box;
 }
 
-.leaderboard-table, .matrix-table {
+.leaderboard-table {
   width: 100%;
+  min-width: 390px;
   border-collapse: collapse;
-  margin-bottom: 2rem;
+  margin-bottom: 1.2rem;
   background: #23272f;
   border-radius: 8px;
   overflow: hidden;
+  display: block;
+  overflow-x: auto;
+  box-sizing: border-box;
 }
 
-.leaderboard-table th, .leaderboard-table td,
-.matrix-table th, .matrix-table td {
-  padding: 0.8rem 1.1rem;
+.leaderboard-table th, .leaderboard-table td {
+  padding: 0.6rem 0.5rem;
   text-align: center;
   border-bottom: 1px solid #363b44;
+  font-size: 15px;
+  white-space: nowrap;
 }
 
 .leaderboard-table th {
@@ -77,10 +84,18 @@
 
 @media (max-width: 700px) {
   .advanced-leaderboard-container {
-    padding: 1rem;
+    max-width: 100vw;
+    width: 100vw;
+    padding: 0.5rem 0.1rem;
+    border-radius: 0;
   }
-  .leaderboard-table th, .leaderboard-table td, .matrix-table th, .matrix-table td {
-    padding: 0.4rem 0.6rem;
-    font-size: 0.95rem;
+  .leaderboard-table {
+    min-width: 390px;
+    font-size: 14px;
+  }
+  .leaderboard-table th, .leaderboard-table td {
+    padding: 0.35rem 0.3rem;
+    font-size: 13px;
   }
 }
+

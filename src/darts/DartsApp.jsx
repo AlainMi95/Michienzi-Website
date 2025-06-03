@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './DartsApp.mobile.css';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import './DartsApp.css';
@@ -144,6 +145,127 @@ const DartsApp = () => {
     multiplier: 1,
     legsToPlay: 3 // default, will be replaced by GameInit
   });
+  const [roundScoreInput, setRoundScoreInput] = useState("");
+
+  // Numpad handlers for round score input
+  const handleNumpad = (num) => {
+    if (gameState.bust) return;
+    if (roundScoreInput.length >= 3) return;
+    if (roundScoreInput === "" && num === 0) return; // no leading zero
+    const next = roundScoreInput + num;
+    if (parseInt(next, 10) > 180) return;
+    setRoundScoreInput(next);
+  };
+
+  const handleNumpadClear = () => {
+    if (gameState.bust) return;
+    if (!roundScoreInput) return;
+    setRoundScoreInput("");
+  };
+
+  const handleNumpadOK = () => {
+    if (gameState.bust || !roundScoreInput) return;
+    const score = parseInt(roundScoreInput, 10);
+    if (isNaN(score) || score < 0 || score > 180) {
+      setRoundScoreInput("");
+      return;
+    }
+    const current = gameState.scores[gameState.currentPlayer];
+    const remaining = current - score;
+    if (remaining < 0 || remaining === 1) {
+      setGameState(prev => ({ ...prev, bust: true, currentRound: [], multiplier: 1 }));
+      setRoundScoreInput("");
+      setTimeout(() => {
+        const scores = [...gameState.scores];
+        const throws = [...gameState.throws];
+        switchPlayer(scores, throws);
+      }, 1000);
+      return;
+    }
+    if (remaining === 0) {
+      const scores = [...gameState.scores];
+      const throws = [...gameState.throws];
+      scores[gameState.currentPlayer] = 0;
+      throws[gameState.currentPlayer].push(score);
+      setRoundScoreInput("");
+      return handleLegWin(scores, throws);
+    }
+    const scores = [...gameState.scores];
+    const throws = [...gameState.throws];
+    scores[gameState.currentPlayer] -= score;
+    throws[gameState.currentPlayer].push(score);
+    setGameState({ ...gameState, scores, throws, bust: false });
+    setRoundScoreInput("");
+    // Immediately switch player after one round score entry
+    setTimeout(() => {
+      switchPlayer(scores, throws);
+    }, 500);
+  };
+
+  // Handle submission of the round score
+  const handleRoundScoreSubmit = (e) => {
+    e.preventDefault();
+    if (gameState.bust || !roundScoreInput) return;
+    const score = parseInt(roundScoreInput, 10);
+    if (isNaN(score) || score < 0) return;
+    // Prevent more than 180 (max 3xT20)
+    if (score > 180) return;
+    const current = gameState.scores[gameState.currentPlayer];
+    const remaining = current - score;
+    // Bust if score is too high or leaves 1
+    if (remaining < 0 || remaining === 1) {
+      setGameState(prev => ({ ...prev, bust: true, currentRound: [], multiplier: 1 }));
+      setRoundScoreInput("");
+      setTimeout(() => {
+        const scores = [...gameState.scores];
+        const throws = [...gameState.throws];
+        switchPlayer(scores, throws);
+      }, 1000);
+      return;
+    }
+    // Check for checkout (must finish on double or bull)
+    if (remaining === 0) {
+      // Assume last dart must be double or bull (simplified, could be improved)
+      // For now, accept any 0 as win
+      const scores = [...gameState.scores];
+      const throws = [...gameState.throws];
+      scores[gameState.currentPlayer] = 0;
+      throws[gameState.currentPlayer].push(score);
+      setRoundScoreInput("");
+      return handleLegWin(scores, throws);
+    }
+    // Normal scoring
+    const scores = [...gameState.scores];
+    const throws = [...gameState.throws];
+    const round = [...gameState.currentRound];
+    scores[gameState.currentPlayer] -= score;
+    round.push(score);
+    throws[gameState.currentPlayer].push(score);
+    setGameState({ ...gameState, scores, currentRound: round, throws, multiplier: 1 });
+    setRoundScoreInput("");
+    // If 3 throws in round, auto switch player
+    if (round.length >= MAX_THROWS_PER_ROUND) {
+      setTimeout(() => {
+        switchPlayer(scores, throws);
+      }, 500);
+    }
+  };
+
+
+  // --- NEW: Bust handler ---
+  const handleBust = () => {
+    setGameState(prev => ({
+      ...prev,
+      bust: true,
+      currentRound: [],
+      multiplier: 1
+    }));
+    setTimeout(() => {
+      const scores = [...gameState.scores];
+      const throws = [...gameState.throws];
+      switchPlayer(scores, throws);
+    }, 1000);
+  };
 
   const startGame = ({ players, startingScore, mode, legsToPlay }) => {
     setGameState({
@@ -174,13 +296,22 @@ const DartsApp = () => {
     const throws = [...gameState.throws];
     const round = [...gameState.currentRound];
 
-    if (scores[gameState.currentPlayer] - score < 0) {
-      return setGameState({ ...gameState, bust: true, currentRound: [] });
+    const remaining = scores[gameState.currentPlayer] - score;
+    if (remaining < 0 || remaining === 1) {
+      setGameState(prev => ({ ...prev, bust: true, currentRound: [], multiplier: 1 }));
+      setTimeout(() => {
+        switchPlayer(scores, throws);
+      }, 1000);
+      return;
     }
 
-    const isCheckout = scores[gameState.currentPlayer] - score === 0;
+    const isCheckout = remaining === 0;
     if (isCheckout && !(gameState.multiplier === 2 || value === 50)) {
-      return setGameState({ ...gameState, bust: true, currentRound: [] });
+      setGameState(prev => ({ ...prev, bust: true, currentRound: [], multiplier: 1 }));
+      setTimeout(() => {
+        switchPlayer(scores, throws);
+      }, 1000);
+      return;
     }
 
     scores[gameState.currentPlayer] -= score;
@@ -289,14 +420,16 @@ const DartsApp = () => {
 
   if (!gameState.gameStarted) return (
     <div className="darts-overview-menu responsive-overview">
+      <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 6 }}>
+        <button
+          className="control-btn leaderboard-btn-small"
+          onClick={() => navigate('/leaderboard')}
+          aria-label="View Leaderboard"
+        >
+          Leaderboard
+        </button>
+      </div>
       <GameInit onStartGame={startGame} />
-      <div style={{ height: 24 }} />
-      <button
-        className="control-btn styled leaderboard-btn"
-        onClick={() => navigate('/leaderboard')}
-      >
-        View Leaderboard
-      </button>
     </div>
   );
 
@@ -325,18 +458,18 @@ const DartsApp = () => {
 
   return (
     <div className="darts-container dark-theme">
-      <div className="scoreboard">
+      <div className="scoreboard" style={{ display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10 }}>
         {gameState.players.map((p, i) => (
-          <div key={i} className={`player-card ${i === gameState.currentPlayer ? 'active' : ''}`}>
-            <h3>{p.name}</h3>
-            <p className="stats-line">
-              Score: {gameState.scores[i]} | Legs: {gameState.legsWon[i]} | Avg: {
+          <div key={i} className={`player-card ${i === gameState.currentPlayer ? 'active' : ''}`} style={{ flex: 1, minWidth: 0, padding: 10, borderRadius: 8, background: i === gameState.currentPlayer ? '#23272f' : '#181a1f', boxShadow: i === gameState.currentPlayer ? '0 2px 8px #1976d2aa' : '0 1px 3px #0002', fontSize: 15, margin: 0 }}>
+            <h3 style={{ fontSize: 18, margin: '0 0 3px 0', fontWeight: 700, letterSpacing: 0.5 }}>{p.name}</h3>
+            <p className="stats-line" style={{ fontSize: 14, margin: '0 0 3px 0', color: '#aaa', lineHeight: 1.3 }}>
+              Score: <span style={{ color: '#fff', fontWeight: 700 }}>{gameState.scores[i]}</span> | Legs: {gameState.legsWon[i]} | Avg: {
                 gameState.throws[i].length
                   ? Math.round(gameState.throws[i].reduce((a, b) => a + b, 0) / gameState.throws[i].length)
                   : 0
               }
             </p>
-            <div className="throw-history" style={{ minHeight: '2.2em' }}>
+            <div className="throw-history" style={{ minHeight: '1.6em', fontSize: 14, color: '#7cfcab', display: 'flex', gap: 5 }}>
               {i === gameState.currentPlayer && gameState.currentRound.map((s, idx) => (
                 <span key={idx} className="throw-score">{s}</span>
               ))}
@@ -345,35 +478,24 @@ const DartsApp = () => {
         ))}
       </div>
 
-      <div className="throw-display">
-        <div className={`throw-box ${gameState.bust ? 'bust' : ''}`}>{gameState.currentRound.at(-1) || '0'}</div>
+      <div className="throw-display" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {checkoutHint && (
-          <div className="checkout-hint">
+          <div className="checkout-hint" style={{ marginBottom: 3, fontSize: 20, color: '#7cfcab', fontWeight: 600 }}>
             {checkoutHint}
           </div>
         )}
-      </div>
-
-      <div className="dartboard-buttons">
-        <div className="dart-multipliers">
-          <button onClick={() => setGameState({ ...gameState, multiplier: 2 })}>Double</button>
-          <button onClick={() => setGameState({ ...gameState, multiplier: 3 })}>Triple</button>
+        <div className={`throw-box${gameState.bust ? ' bust' : ''}`} style={{ marginBottom: 14, fontSize: 38, width: 145, textAlign: 'center', borderRadius: 10, padding: '1.2rem', border: '2px solid #444', background: '#1f1f1f', color: '#fff', outline: 'none', boxShadow: gameState.bust ? '0 0 0 2px red' : '0 2px 8px rgba(0,0,0,0.13)' }}>
+          {roundScoreInput || '0'}
         </div>
 
-        <div className="dart-numbers">
-          {Array.from({ length: 20 }, (_, i) => i + 1).map((num) => (
-            <button key={num} onClick={() => handleNumberClick(num)}>{num}</button>
+        <div className="numpad" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 75px)', gap: 14, marginTop: 12 }}>
+          {[1,2,3,4,5,6,7,8,9].map(n => (
+            <button key={n} type="button" className="numpad-btn" style={{ fontSize: 26, padding: '18px 0', borderRadius: 10, background: '#23272f', color: '#7cfcab', border: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.10)', cursor: 'pointer' }} disabled={gameState.bust || roundScoreInput.length >= 3} onClick={() => handleNumpad(n)}>{n}</button>
           ))}
+          <button type="button" className="numpad-btn" style={{ fontSize: 18, padding: '18px 0', borderRadius: 10, background: '#ff1744', color: '#fff', border: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.10)', cursor: 'pointer' }} disabled={gameState.bust || !roundScoreInput} onClick={handleNumpadClear}>Clear</button>
+          <button type="button" className="numpad-btn" style={{ fontSize: 26, padding: '18px 0', borderRadius: 10, background: '#23272f', color: '#7cfcab', border: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.10)', cursor: 'pointer' }} disabled={gameState.bust || roundScoreInput.length >= 3} onClick={() => handleNumpad(0)}>0</button>
+          <button type="button" className="numpad-btn" style={{ fontSize: 18, padding: '18px 0', borderRadius: 10, background: '#1976d2', color: '#fff', border: 'none', boxShadow: '0 2px 10px rgba(0,0,0,0.10)', cursor: 'pointer' }} disabled={gameState.bust || !roundScoreInput} onClick={handleNumpadOK}>OK</button>
         </div>
-
-        <div className="bull-buttons">
-          <button onClick={() => handleNumberClick(25)}>Bull</button>
-          <button onClick={() => handleNumberClick(50)}>Bullseye</button>
-        </div>
-      </div>
-
-      <div className="numpad">
-        <button onClick={handleUndo} className="control-btn styled" style={{ backgroundColor: '#ff1744' }}>Undo</button>
       </div>
     </div>
   );
