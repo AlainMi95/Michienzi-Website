@@ -14,7 +14,7 @@ import Footer from "./components/Footer";
 import Login from './darts/Login';
 import ProtectedRoute from './darts/ProtectedRoute';
 import AdminRoute from './darts/AdminRoute';
-import { AdvancedLeaderboard } from './darts/components';
+import AdvancedLeaderboard from './darts/components/AdvancedLeaderboard';
 import Players from './darts/Players';
 import DartsApp from './darts/DartsApp'; // ✅ You forgot to import this before
 import "./App.css";
