@@ -151,7 +151,6 @@ const DartsApp = () => {
   const handleNumpad = (num) => {
     if (gameState.bust) return;
     if (roundScoreInput.length >= 3) return;
-    if (roundScoreInput === "" && num === 0) return; // no leading zero
     const next = roundScoreInput + num;
     if (parseInt(next, 10) > 180) return;
     setRoundScoreInput(next);
@@ -164,7 +163,7 @@ const DartsApp = () => {
   };
 
   const handleNumpadOK = () => {
-    if (gameState.bust || !roundScoreInput) return;
+    if (gameState.bust || roundScoreInput === "") return;
     const score = parseInt(roundScoreInput, 10);
     if (isNaN(score) || score < 0 || score > 180) {
       setRoundScoreInput("");
