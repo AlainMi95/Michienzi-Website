@@ -1,5 +1,15 @@
 /* DartsAppModern.css */
 
+/* Hide number input spinners for .no-spin */
+.no-spin::-webkit-outer-spin-button, .no-spin::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.no-spin[type=number] {
+  -moz-appearance: textfield;
+}
+
+
 .responsive-overview {
   display: flex;
   flex-direction: column;

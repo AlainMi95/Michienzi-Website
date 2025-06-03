@@ -125,45 +125,42 @@ const AdvancedLeaderboard = () => {
         </tbody>
       </table>
 
-      <h3 style={{ marginTop: '2rem' }}>Head-to-Head Comparison</h3>
-      <div className="h2h-dropdowns">
-        <select value={selected1} onChange={e => setSelected1(e.target.value)}>
+
+      <h3 style={{ marginTop: '2rem', fontSize: 17 }}>Head-to-Head Comparison</h3>
+      <div style={{ display: 'flex', gap: 12, margin: '10px 0 8px 0', flexWrap: 'wrap' }}>
+        <select
+          value={selected1}
+          onChange={e => setSelected1(e.target.value)}
+          style={{ padding: '7px 12px', borderRadius: 6, border: '1px solid #363b44', background: '#181a1f', color: '#7cfcab', fontSize: 15, minWidth: 120 }}
+        >
           <option value="">Select Player 1</option>
           {players.map(p => (
             <option key={p.id} value={p.id}>{p.name}</option>
           ))}
         </select>
-        <select value={selected2} onChange={e => setSelected2(e.target.value)}>
+        <select
+          value={selected2}
+          onChange={e => setSelected2(e.target.value)}
+          style={{ padding: '7px 12px', borderRadius: 6, border: '1px solid #363b44', background: '#181a1f', color: '#7cfcab', fontSize: 15, minWidth: 120 }}
+        >
           <option value="">Select Player 2</option>
           {players.map(p => (
             <option key={p.id} value={p.id}>{p.name}</option>
           ))}
         </select>
       </div>
-      {headToHeadResult}
-
-      <h3 style={{ marginTop: '2rem' }}>All-vs-All Matrix</h3>
-      <div className="matrix-scroll">
-        <table className="matrix-table">
-          <thead>
-            <tr>
-              <th></th>
-              {players.map(p => <th key={p.id}>{p.name}</th>)}
-            </tr>
-          </thead>
-          <tbody>
-            {players.map(row => (
-              <tr key={row.id}>
-                <td><b>{row.name}</b></td>
-                {players.map(col => (
-                  <td key={col.id} style={{ background: row.id === col.id ? '#222' : undefined }}>
-                    {row.id === col.id ? '-' : (headToHead[row.id]?.[col.id]?.wins || 0)}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div style={{ minHeight: 34, marginBottom: 10, fontSize: 15, color: '#7cfcab', fontWeight: 500 }}>
+        {selected1 && selected2 && selected1 !== selected2 ? (
+          headToHead[selected1] && headToHead[selected1][selected2] && headToHead[selected2] && headToHead[selected2][selected1] ? (
+            <span>
+              {players.find(p => p.id === selected1)?.name} vs {players.find(p => p.id === selected2)?.name}: {headToHead[selected1][selected2].wins} - {headToHead[selected2][selected1].wins} (out of {headToHead[selected1][selected2].games} games)
+            </span>
+          ) : (
+            <span>No games played between these players yet.</span>
+          )
+        ) : (
+          <span style={{ color: '#aaa' }}>Select two different players to compare.</span>
+        )}
       </div>
     </div>
   );
